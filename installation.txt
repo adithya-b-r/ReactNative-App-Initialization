@@ -1,0 +1,63 @@
+Step 1:
+  npx create-expo-app ./
+
+Step 2:
+  npx expo install nativewind tailwindcss react-native-reanimated react-native-safe-area-context
+
+Step 3:
+  npx tailwind init
+
+Step 4:
+  -Paste it in tailwind.config.js:
+  ```
+    /** @type {import('tailwindcss').Config} */
+    module.exports = {
+      content: ["./app/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}"],
+      presets: [require("nativewind/preset")],
+      theme: {
+        extend: {},
+      },
+      plugins: [],
+    }
+  ```
+
+Step 5:
+  -create 'babel.config.js'
+  -Paste Following code in babel.config.js:
+  ```
+    module.exports = function (api) {
+      api.cache(true);
+      return {
+        presets: [
+          ["babel-preset-expo", { jsxImportSource: "nativewind" }],
+          "nativewind/babel",
+        ],
+      };
+    };
+  ```
+
+Step 6:
+  npx expo customize metro.config.js
+  -Paste below code in metro.config.js:
+  ```
+    const { getDefaultConfig } = require("expo/metro-config");
+    const { withNativeWind } = require("nativewind/metro");
+
+    const config = getDefaultConfig(__dirname);
+
+    module.exports = withNativeWind(config, { input: "./global.css" });
+  ```
+
+Step 7:
+  create global.css file.
+  -Paste below code in global.css:
+  ```
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+  ```
+
+  -import "../global.css"; in _layout.tsx
+
+Native docs: https://www.nativewind.dev/getting-started/expo-router
+Expo Docs: https://docs.expo.dev
